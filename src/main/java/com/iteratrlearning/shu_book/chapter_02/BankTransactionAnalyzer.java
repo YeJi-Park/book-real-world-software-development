@@ -38,5 +38,8 @@ public class BankTransactionAnalyzer {
 		
 		System.out.println("Min Amount for all periods:"+
 				bankStatementProcessor.getMinAmountInDateRange(LocalDate.of(1990, Month.JANUARY, 1), LocalDate.of(2021, Month.DECEMBER, 31)));
+		
+		System.out.println(bankStatementProcessor.getAmountGroupingByMonth());
+		System.out.println(bankStatementProcessor.getAmountGroupingByCategory());
 	}
 }

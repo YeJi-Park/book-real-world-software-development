@@ -3,6 +3,9 @@ package com.iteratrlearning.shu_book.chapter_02;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class BankStatementProcessor {
 private final List<BankTransaction> bankTransactions;
@@ -64,5 +67,27 @@ private final List<BankTransaction> bankTransactions;
 		}
 		
 		return minAmount;
+	}
+	
+	public Map<Month, Double> getAmountGroupingByMonth() {
+		Map<Month, Double> monthHistogram = new TreeMap<>();
+		
+		for(Month month : Month.values()) {
+			monthHistogram.put(month, 0d);
+		}
+		
+		for(final BankTransaction bankTransaction: bankTransactions) {
+			monthHistogram.computeIfPresent(bankTransaction.getDate().getMonth(), 
+					(k,v)-> v = v + bankTransaction.getAmount());
+		}
+		
+		return monthHistogram; 
+	}
+	
+	public Map<String, Double> getAmountGroupingByCategory(){
+		return bankTransactions.stream()
+						.collect(Collectors.groupingBy(
+									BankTransaction::getDescription, 
+									Collectors.summingDouble(BankTransaction::getAmount)));					
 	}
 }
