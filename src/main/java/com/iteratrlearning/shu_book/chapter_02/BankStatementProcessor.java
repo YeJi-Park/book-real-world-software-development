@@ -1,5 +1,6 @@
 package com.iteratrlearning.shu_book.chapter_02;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
@@ -39,5 +40,29 @@ private final List<BankTransaction> bankTransactions;
 		}
 		
 		return total;
+	}
+	
+	public double getMaxAmountInDateRange(final LocalDate from, final LocalDate to) {
+		double maxAmount = Double.MIN_VALUE;
+		for(final BankTransaction bankTransaction: bankTransactions) {
+			if( (bankTransaction.getDate().isEqual(from) || bankTransaction.getDate().isAfter(from) ) 
+					&& (bankTransaction.getDate().isEqual(to) || bankTransaction.getDate().isBefore(to)) ) {
+				maxAmount = Double.max(maxAmount, bankTransaction.getAmount());
+			}
+		}
+		
+		return maxAmount;
+	}
+	
+	public double getMinAmountInDateRange(final LocalDate from, final LocalDate to) {
+		double minAmount = Double.MAX_VALUE;
+		for(final BankTransaction bankTransaction: bankTransactions) {
+			if( (bankTransaction.getDate().isEqual(from) || bankTransaction.getDate().isAfter(from) ) 
+					&& (bankTransaction.getDate().isEqual(to) || bankTransaction.getDate().isBefore(to)) ) {
+				minAmount = Double.min(minAmount, bankTransaction.getAmount());
+			}
+		}
+		
+		return minAmount;
 	}
 }

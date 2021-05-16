@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
@@ -31,5 +32,11 @@ public class BankTransactionAnalyzer {
 		System.out.println("Transactions of February:"+bankStatementProcessor.calculateTotalInMonth(Month.FEBRUARY));
 
 		System.out.println("Total Salary:"+bankStatementProcessor.calculateTotalForCategory("Salary"));
+		
+		System.out.println("Max Amount for all periods:"+
+				bankStatementProcessor.getMaxAmountInDateRange(LocalDate.of(1990, Month.JANUARY, 1), LocalDate.of(2021, Month.DECEMBER, 31)));
+		
+		System.out.println("Min Amount for all periods:"+
+				bankStatementProcessor.getMinAmountInDateRange(LocalDate.of(1990, Month.JANUARY, 1), LocalDate.of(2021, Month.DECEMBER, 31)));
 	}
 }
