@@ -2,6 +2,7 @@ package com.iteratrlearning.shu_book.chapter_02;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -89,5 +90,42 @@ private final List<BankTransaction> bankTransactions;
 						.collect(Collectors.groupingBy(
 									BankTransaction::getDescription, 
 									Collectors.summingDouble(BankTransaction::getAmount)));					
+	}
+	
+	public List<BankTransaction> findTransactionsGreaterThanEqual(final int amount){
+		final List<BankTransaction> result = new ArrayList<>();
+		
+		for(final BankTransaction bankTransaction: bankTransactions) {
+			if(bankTransaction.getAmount() >= amount) {
+				result.add(bankTransaction);
+			}
+		}
+		
+		return result;
+	}
+	
+	public List<BankTransaction> findTransactionInMonth(final Month month){
+		final List<BankTransaction> result = new ArrayList<>();
+		
+		for(final BankTransaction bankTransaction: bankTransactions) {
+			if(bankTransaction.getDate().getMonth() == month) {
+				result.add(bankTransaction);
+			}
+		}
+		
+		return result;
+	}
+	
+	public List<BankTransaction> findTransactionInMonthAndGreater(final Month month, final int amount){
+		final List<BankTransaction> result = new ArrayList<>();
+		
+		for(final BankTransaction bankTransaction: bankTransactions) {
+			if(bankTransaction.getDate().getMonth() == month && 
+					bankTransaction.getAmount() >= amount ) {
+				result.add(bankTransaction);
+			}
+		}
+		
+		return result;
 	}
 }
