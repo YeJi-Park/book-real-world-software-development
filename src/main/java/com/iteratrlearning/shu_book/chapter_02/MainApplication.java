@@ -9,7 +9,7 @@ public class MainApplication {
 		 	= new BankTransactionAnalyzer();
 		 final BankStatementParser bankStatementParser
 		 	= new BankStatementCSVParser();
-		 bankStatementAnalyzer.analyze(args[0], bankStatementParser);
+		 bankStatementAnalyzer.analyze("bank-data-simple.csv", bankStatementParser);
 	}
 
 }
