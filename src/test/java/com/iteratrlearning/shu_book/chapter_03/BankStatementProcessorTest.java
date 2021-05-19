@@ -28,19 +28,14 @@ public class BankStatementProcessorTest {
 		
 		final BankStatementProcessor bankStatementProcessor = new BankStatementProcessor(bankTransactions);
 		final List<BankTransaction> transactions = 
-				bankStatementProcessor.findTranactions(new BankTransactionIsInFebruaryAndExpensive());
+				bankStatementProcessor.findTranactions(bankTransaction ->
+					bankTransaction.getDate().getMonth() == Month.FEBRUARY &&
+					bankTransaction.getAmount() >= 1_000 
+				);
 		
 		assertThat(transactions, contains(febrarySalary));
 		assertThat(transactions, hasSize(1));
 	}
 	
-	public class BankTransactionIsInFebruaryAndExpensive implements BankTransactionFilter {
 
-		@Override
-		public boolean test(BankTransaction bankTransaction) {
-			return bankTransaction.getDate().getMonth() == Month.FEBRUARY &&
-					bankTransaction.getAmount() >= 1_000;
-		}
-
-	}
 }
