@@ -6,8 +6,8 @@ import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class BankStatementCSVParserTest {
 	
@@ -24,15 +24,17 @@ public class BankStatementCSVParserTest {
 		
 		final double tolerance = 0.0d;
 		
-		Assert.assertEquals(expected.getDate(), result.getDate());
-		Assert.assertEquals(expected.getAmount(), result.getAmount(), tolerance);
-		Assert.assertEquals(expected.getDescription(), result.getDescription());
+		Assertions.assertEquals(expected.getDate(), result.getDate());
+		Assertions.assertEquals(expected.getAmount(), result.getAmount(), tolerance);
+		Assertions.assertEquals(expected.getDescription(), result.getDescription());
 	}
 	
-	@Test(expected = DateTimeParseException.class)
+	@Test
 	public void shouldFailToParseUnvalidDateFormatData() throws Exception{
 		final String line = "30-13-2017,-50,Tesco";
-		final BankTransaction result = statementParser.parseFrom(line);
+		Assertions.assertThrows(DateTimeParseException.class, () ->{			
+			statementParser.parseFrom(line);
+		});
 	}
 	
 	@Test
@@ -56,9 +58,9 @@ public class BankStatementCSVParserTest {
 		final double tolerance = 0.0d;
 		
 		for(int i=0; i<lines.length; i++) {
-			Assert.assertEquals(expected[i].getDate(), result.get(i).getDate());
-			Assert.assertEquals(expected[i].getAmount(), result.get(i).getAmount(), tolerance);
-			Assert.assertEquals(expected[i].getDescription(), result.get(i).getDescription());
+			Assertions.assertEquals(expected[i].getDate(), result.get(i).getDate());
+			Assertions.assertEquals(expected[i].getAmount(), result.get(i).getAmount(), tolerance);
+			Assertions.assertEquals(expected[i].getDescription(), result.get(i).getDescription());
 		}
 	}
 }
