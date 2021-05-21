@@ -9,12 +9,22 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import com.iteratrlearning.shu_book.chapter_03.BankTransactionFilter;
+import com.iteratrlearning.shu_book.chapter_03.BankTransactionSummarizer;
 
 public class BankStatementProcessor {
 private final List<BankTransaction> bankTransactions;
 	
 	public BankStatementProcessor(final List<BankTransaction> bankTransactions) {
 		this.bankTransactions = bankTransactions;
+	}
+	
+	public double summarizeTransactions(final BankTransactionSummarizer bankTransactionSummarizer) {
+		double result = 0;
+		for(final BankTransaction bankTransaction: bankTransactions) {
+			result = bankTransactionSummarizer.summarize(result, bankTransaction);
+		}
+		
+		return result;
 	}
 	
 	public double calculateTotalAmount() {
@@ -27,25 +37,17 @@ private final List<BankTransaction> bankTransactions;
 	}
 	
 	public double calculateTotalInMonth(final Month month) {
-		double total = 0;
-		for(final BankTransaction bankTransaction: bankTransactions) {
-			if(bankTransaction.getDate().getMonth() == month) {
-				total += bankTransaction.getAmount();
-			}
-		}
-		
-		return total;
+		return summarizeTransactions((acc, bankTransaction) -> 
+		bankTransaction.getDate().getMonth() == month ?
+				bankTransaction.getAmount() + acc : acc
+		);
 	}
 	
 	public double calculateTotalForCategory(final String category) {
-		double total = 0;
-		for(final BankTransaction bankTransaction: bankTransactions) {
-			if(bankTransaction.getDescription().equals(category)) {
-				total += bankTransaction.getAmount();
-			}
-		}
-		
-		return total;
+		return summarizeTransactions((acc, bankTransaction) -> 
+		bankTransaction.getDescription().equals(category)?
+				bankTransaction.getAmount() + acc : acc
+		);
 	}
 	
 	public double getMaxAmountInDateRange(final LocalDate from, final LocalDate to) {
@@ -105,5 +107,10 @@ private final List<BankTransaction> bankTransactions;
 		}
 		
 		return result;
+	}
+	
+	public List<BankTransaction> findTransactionsGreatereThanEqual(final int amount){
+		return findTranactions(bankTransaction ->
+			bankTransaction.getAmount() >= amount );
 	}
 }
