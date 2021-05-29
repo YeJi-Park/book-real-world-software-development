@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.iteratrlearning.shu_book.chapter_03.BankStatementValidator;
 import com.iteratrlearning.shu_book.chapter_03.CSVSyntaxException;
 
 public class BankStatementCSVParser implements BankStatementParser {
@@ -20,6 +21,9 @@ public class BankStatementCSVParser implements BankStatementParser {
 		if(cols.length < EXPECTED_ATTRIBUTES_LENGTH) {
 			throw new CSVSyntaxException();
 		}
+		
+		// BankStatementValidator validator = new BankStatementValidator(cols[0], cols[1], cols[2]);
+		// if( validator.validate().hasErrors() ) ?
 		
 		final LocalDate date = LocalDate.parse(cols[0], DATE_PATTERN);
 		final double amount = Double.parseDouble(cols[1]);
