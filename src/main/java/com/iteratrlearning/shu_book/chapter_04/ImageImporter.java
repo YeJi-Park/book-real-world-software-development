@@ -1,6 +1,7 @@
 package com.iteratrlearning.shu_book.chapter_04;
 
 import java.io.File;
+import java.awt.image.BufferedImage;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public class ImageImporter implements Importer {
 		final Map<String, String> attributes = new HashMap<>();
 		attributes.put(PATH, file.getPath());
 		
-		final BufferdImage image = ImageIO.read(file);
+		final BufferedImage image = ImageIO.read(file);
 		attributes.put(WIDTH, String.valueOf(image.getWidth()));
 		attributes.put(HEIGHT, String.valueOf(image.getHeight()));
 		attributes.put(TYPE, "IMAGE");
