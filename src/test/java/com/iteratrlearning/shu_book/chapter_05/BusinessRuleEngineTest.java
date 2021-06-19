@@ -3,6 +3,7 @@ package com.iteratrlearning.shu_book.chapter_05;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.*;
 
 public class BusinessRuleEngineTest {
 	@Test
@@ -19,5 +20,16 @@ public class BusinessRuleEngineTest {
 		businessRuleEngine.addAction(() -> {});
 		
 		assertEquals(2, businessRuleEngine.count());
+	}
+	
+	@Test
+	void shouldExecuteOneAction() {
+		final BusinessRuleEngine businessRuleEngine = new BusinessRuleEngine();
+		final Action mockAction = mock(Action.class); // mock 객체 생성
+		
+		businessRuleEngine.addAction(mockAction);
+		businessRuleEngine.run(); // when
+		
+		verify(mockAction).execute(); // then
 	}
 }
