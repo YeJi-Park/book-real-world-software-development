@@ -1,6 +1,6 @@
 package com.iteratrlearning.shu_book.chapter_05;
 
-public interface ConditionalAction {
+@FunctionalInterface
+public interface Condition {
 	boolean evaluate(Facts facts);
-	void execute(Facts facts);
 }
