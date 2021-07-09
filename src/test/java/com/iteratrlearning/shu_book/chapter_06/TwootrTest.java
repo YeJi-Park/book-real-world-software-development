@@ -10,8 +10,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.Mockito;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -25,8 +23,7 @@ public class TwootrTest {
 	@BeforeAll
 	public void setUp() {
 		twootr = new Twootr(userRepository);
-		userRepository.put(TestData.USER_ID, new User(TestData.USER_ID, TestData.PASSWORD));
-		userRepository.put(TestData.USER_ID, new User(TestData.USER_ID, TestData.PASSWORD));
+		twootr.onRegisterUser(TestData.USER_ID, TestData.PASSWORD);
 	}
 
 	@Test

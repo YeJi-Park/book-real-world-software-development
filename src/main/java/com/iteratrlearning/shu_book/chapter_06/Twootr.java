@@ -1,6 +1,5 @@
 package com.iteratrlearning.shu_book.chapter_06;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -19,5 +18,10 @@ public class Twootr {
 		}
 			
 		return res;
+	}
+	
+	public boolean onRegisterUser(String userId, String password) {
+		final User newUser = new User(userId, KeyGenerator.hash(password, KeyGenerator.newSalt()) );
+		return userRepository.put(userId, newUser)!=null;
 	}
 }
