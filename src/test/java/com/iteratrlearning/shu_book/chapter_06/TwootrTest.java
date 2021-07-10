@@ -47,7 +47,15 @@ public class TwootrTest {
 		final FollowStatus followStatus = endPoint.onFollow(TestData.OTHER_USER_ID);
 		assertEquals(FollowStatus.SUCCESS, followStatus);
 	}
-
+	
+	@Test
+	public void shouldNotDuplicateFollowValidUser() {
+		logon();
+		
+		endPoint.onFollow(TestData.OTHER_USER_ID);
+		final FollowStatus followStatus = endPoint.onFollow(TestData.OTHER_USER_ID);
+		assertEquals(FollowStatus.ALREADY_FOLLOWING, followStatus);
+	}
 	
 	private void logon() {
 		this.endPoint = logon(TestData.USER_ID, receiverEndPoint);
