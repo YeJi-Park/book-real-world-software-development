@@ -6,4 +6,6 @@ public class TestData {
     static final String NOT_A_USER = "Jack";
     
     static final String PASSWORD = "abcd";
+    
+    static final String TWOOT = "Twoot";
 }

@@ -19,6 +19,8 @@ public class Twootr {
 			byte[] hashedPassword = KeyGenerator.hash(password, sameIdUser.getSalt());
 			return Arrays.equals(sameIdUser.getPassword(), hashedPassword);
 		});
+		
+		user.ifPresent(loggedOnUser -> loggedOnUser.onLogon(receiver));
 			
 		return user.map(authenticatedUser -> new SenderEndPoint(authenticatedUser, this));
 	}

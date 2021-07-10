@@ -13,4 +13,12 @@ public class SenderEndPoint {
 	public FollowStatus onFollow(String idToFollow) {
 		return twootr.onFollow(user, idToFollow);
 	}
+	
+	public void onSendTwoot(String id, String content) {
+		final String userId = user.getId();
+		 final Twoot twoot = new Twoot(id, userId, content);
+		 user.followers()
+		 	.filter(User::isLoggedOn)
+		 	.forEach(follower -> follower.receiveTwoot(twoot));
+	}
 }

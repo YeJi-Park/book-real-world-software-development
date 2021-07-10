@@ -1,5 +1,5 @@
 package com.iteratrlearning.shu_book.chapter_06;
 
-public class ReceiverEndPoint {
-
+public interface ReceiverEndPoint {
+	void onTwoot(Twoot twoot);
 }

@@ -25,6 +25,7 @@ public class TwootrTest {
 	public void setUp() {
 		twootr = new Twootr(userRepository);
 		twootr.onRegisterUser(TestData.USER_ID, TestData.PASSWORD);
+		twootr.onRegisterUser(TestData.OTHER_USER_ID, TestData.PASSWORD);
 	}
 
 	@Test
@@ -55,6 +56,20 @@ public class TwootrTest {
 		endPoint.onFollow(TestData.OTHER_USER_ID);
 		final FollowStatus followStatus = endPoint.onFollow(TestData.OTHER_USER_ID);
 		assertEquals(FollowStatus.ALREADY_FOLLOWING, followStatus);
+	}
+	
+	@Test
+	public void shouldReceiveTwootsFromFollowedUser() {
+		final String id  = "1";
+		
+		logon();
+		
+		endPoint.onFollow(TestData.OTHER_USER_ID);
+		
+		final SenderEndPoint otherEndPoint = logon(TestData.OTHER_USER_ID, receiverEndPoint);
+		otherEndPoint.onSendTwoot(id, TestData.TWOOT);
+		
+		Mockito.verify(receiverEndPoint).onTwoot(new Twoot(id, TestData.OTHER_USER_ID, TestData.TWOOT));
 	}
 	
 	private void logon() {

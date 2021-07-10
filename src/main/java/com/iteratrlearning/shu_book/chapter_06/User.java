@@ -12,6 +12,8 @@ public class User {
 	private final Set<User> followers = new HashSet<>();
 	private final Set<String> following = new HashSet<>();
 	
+	private ReceiverEndPoint receiverEndPoint;
+	
 	public User(String id, byte[] password, byte[] salt) {
 		this.id = id;
 		this.password = password;
@@ -45,5 +47,22 @@ public class User {
 	
 	public Set<String> getFollowing() {
 		return following;
+	}
+	
+	public void onLogon(final ReceiverEndPoint receiverEndPoint) {
+        this.receiverEndPoint = receiverEndPoint;
+    }
+	
+	public boolean isLoggedOn() {
+        return receiverEndPoint != null;
+    }
+	
+	public boolean receiveTwoot(Twoot twoot) {
+        if (isLoggedOn()) {
+            receiverEndPoint.onTwoot(twoot);
+            return true;
+        }
+
+        return false;
 	}
 }
