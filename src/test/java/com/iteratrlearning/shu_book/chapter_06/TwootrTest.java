@@ -10,14 +10,15 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class TwootrTest {
 	
 	private Twootr twootr;
-	private final Map<String, User> userRepository = new HashMap<>();
+	private SenderEndPoint endPoint;
 	
+	private final Map<String, User> userRepository = new HashMap<>();
 	private final ReceiverEndPoint receiverEndPoint = Mockito.mock(ReceiverEndPoint.class);
 	
 	@BeforeAll
@@ -28,10 +29,7 @@ public class TwootrTest {
 
 	@Test
 	public void shouldBeAbleToAuthenticateUser() {
-		final Optional<SenderEndPoint> endpoint =  twootr.onLogon(
-				TestData.USER_ID, TestData.PASSWORD, receiverEndPoint);
-		
-		assertFalse(endpoint.isEmpty());
+		logon();
 	}
 	
 	@Test
@@ -41,4 +39,26 @@ public class TwootrTest {
 		
 		assertFalse(endPoint.isPresent());
 	}
+	
+	@Test
+	public void shouldFollowValidUser() {
+		logon();
+		
+		final FollowStatus followStatus = endPoint.onFollow(TestData.OTHER_USER_ID);
+		assertEquals(FollowStatus.SUCCESS, followStatus);
+	}
+
+	
+	private void logon() {
+		this.endPoint = logon(TestData.USER_ID, receiverEndPoint);
+	}
+	
+	private SenderEndPoint logon(String userId, ReceiverEndPoint receiverEndPoint) {
+		Optional<SenderEndPoint> endPoint = twootr.onLogon(userId, TestData.PASSWORD, receiverEndPoint);
+		assertTrue(endPoint.isPresent());
+		
+		return endPoint.get();
+	}
+	
+	
 }
