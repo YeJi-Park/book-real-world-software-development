@@ -13,19 +13,25 @@ public class Twootr {
 	}
 	
 	public Optional<SenderEndPoint> onLogon(String userId, String password, ReceiverEndPoint receiver){
-		Optional<SenderEndPoint> res = Optional.empty();
-		User sameId = userRepository.get(userId); 
-		if( sameId != null) {
-			byte[] hashedPassword = KeyGenerator.hash(password, sameId.getSalt());
-			Arrays.equals(sameId.getPassword(), hashedPassword);
-		}
+		Optional<User> user = Optional.ofNullable(userRepository.get(userId));
+		
+		user.filter(sameIdUser->{
+			byte[] hashedPassword = KeyGenerator.hash(password, sameIdUser.getSalt());
+			return Arrays.equals(sameIdUser.getPassword(), hashedPassword);
+		});
 			
-		return res;
+		return user.map(authenticatedUser -> new SenderEndPoint(authenticatedUser, this));
 	}
 	
 	public boolean onRegisterUser(String userId, String password) {
 		byte[] salt = KeyGenerator.newSalt();
 		final User newUser = new User(userId, KeyGenerator.hash(password, salt), salt);
 		return userRepository.put(userId, newUser)!=null;
+	}
+	
+	public FollowStatus onFollow(User user, String idToFollow) {
+		return Optional.ofNullable(userRepository.get(idToFollow))
+				.map(followee -> followee.addFollower(user))
+				.orElse(FollowStatus.INVALID_USER);
 	}
 }
